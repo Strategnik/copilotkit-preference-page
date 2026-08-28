@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What are you building? — CopilotKit</title>
+<meta name="description" content="Tell us what you're building with CopilotKit and we'll tailor what we send you.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDEDF5;        /* copilotkit.ai body background */
+    --ink:#120635;       /* brand navy (logo wordmark) */
+    --heading:#010507;   /* site heading near-black */
+    --accent:#6963ff;    /* CopilotKit purple */
+    --card:#ffffff;
+    --line:#e2e1ee;
+    --muted:#5d5776;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    min-height:100vh; display:flex; flex-direction:column;
+    -webkit-font-smoothing:antialiased;
+  }
+  header{padding:28px clamp(20px,5vw,56px)}
+  header img{height:26px;display:block}
+  main{flex:1; width:100%; max-width:880px; margin:0 auto; padding:24px 20px 80px}
+  .eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(28px,5vw,40px);font-weight:600;color:var(--heading);letter-spacing:-.01em;line-height:1.15;margin-bottom:12px}
+  .sub{font-size:17px;color:var(--muted);max-width:560px;margin-bottom:36px;line-height:1.55}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+  .card{
+    text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:16px;
+    padding:22px 22px 20px;cursor:pointer;font:inherit;color:var(--ink);
+    transition:border-color .15s, transform .12s, box-shadow .15s;
+  }
+  .card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(18,6,53,.08)}
+  .card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .card h2{font-size:17px;font-weight:700;color:var(--heading);margin-bottom:6px}
+  .card p{font-size:14px;color:var(--muted);line-height:1.5}
+  .card .go{display:inline-block;margin-top:14px;font-size:13.5px;font-weight:700;color:var(--accent)}
+  .card.selected{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+  .card[disabled]{opacity:.45;cursor:default;transform:none;box-shadow:none}
+
+  /* states */
+  #done,#error{display:none;background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:44px 36px;text-align:center}
+  #done h2,#error h2{font-size:26px;font-weight:600;color:var(--heading);margin-bottom:10px}
+  #done p,#error p{color:var(--muted);font-size:16px;line-height:1.6;max-width:460px;margin:0 auto}
+  .pill{
+    display:inline-block;margin-top:24px;background:var(--heading);color:#fff;text-decoration:none;
+    font-weight:600;font-size:15px;padding:13px 26px;border-radius:999px;
+  }
+  .pill:hover{background:#221a3f}
+  #spin{display:none;margin:36px auto;width:34px;height:34px;border-radius:50%;
+    border:4px solid var(--line);border-top-color:var(--accent);animation:r 0.8s linear infinite}
+  @keyframes r{to{transform:rotate(360deg)}}
+  footer{padding:26px;text-align:center;color:#8b87a0;font-size:12.5px}
+  footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+<header>
+  <a href="https://www.copilotkit.ai" aria-label="CopilotKit"><img src="cpk-logo.svg" alt="CopilotKit"></a>
+</header>
+
+<main>
+  <section id="ask">
+    <p class="eyebrow">One click — that's it</p>
+    <h1>What are you building?</h1>
+    <p class="sub">Pick the closest match and we'll tailor what we send you — the right examples, the right guides, nothing else.</p>
+    <div class="cards" role="group" aria-label="What are you building?">
+      <button class="card" data-track="t1_agent_native_canvas">
+        <h2>Agent-native canvas</h2>
+        <p>The agent and your users work the same surface — shared state, live on a canvas.</p>
+        <span class="go">This is me →</span>
+      </button>
+      <button class="card" data-track="t2_generative_ui">
+        <h2>Generative UI</h2>
+        <p>Agents render real components in your app — charts, forms, whatever the moment needs.</p>
+        <span class="go">This is me →</span>
+      </button>
+      <button class="card" data-track="t3_multi_agent">
+        <h2>Multi-agent orchestration</h2>
+        <p>Several specialized agents, coordinated — one coherent experience for the user.</p>
+        <span class="go">This is me →</span>
+      </button>
+      <button class="card" data-track="t4_agents_in_chat">
+        <h2>Agents in Slack / Teams</h2>
+        <p>Your agent living where your users already work — channels, threads, interactive messages.</p>
+        <span class="go">This is me →</span>
+      </button>
+      <button class="card" data-track="t5_vertical_lob">
+        <h2>A vertical / LOB copilot</h2>
+        <p>A domain copilot that acts — with approvals, guardrails, and an audit trail.</p>
+        <span class="go">This is me →</span>
+      </button>
+    </div>
+    <div id="spin" role="status" aria-label="Saving"></div>
+  </section>
+
+  <section id="done">
+    <h2>Got it — thanks!</h2>
+    <p>We'll tailor what we send you from here. In the meantime, the fastest way to go deeper is the interactive Dojo — live, runnable examples of exactly what you're building.</p>
+    <a class="pill" id="doneLink" href="https://dojo.showcase.copilotkit.ai/" target="_blank" rel="noopener">Open the Dojo →</a>
+  </section>
+
+  <section id="error">
+    <h2>Hmm, that didn't save.</h2>
+    <p>No worries — just reply to the email that brought you here and tell us what you're building. A human reads every reply.</p>
+  </section>
+</main>
+
+<footer>
+  <a href="https://www.copilotkit.ai">copilotkit.ai</a> · <a href="https://docs.copilotkit.ai">Docs</a> · <a href="https://discord.gg/copilotkit">Discord</a>
+</footer>
+
+<script>
+/* ============================================================
+   CONFIG — CopilotKit team: two values to set before go-live.
+   1. FORM_GUID: create the HubSpot form per HANDOFF.md (2 min),
+      paste its GUID here.
+   2. Nothing else. PORTAL_ID is already correct.
+   Email identification: link to this page from HubSpot emails as
+     https://<your-host>/?email={{contact.email}}
+   The HubSpot personalization token fills the recipient's email.
+   ============================================================ */
+const PORTAL_ID = "45532593";
+const FORM_GUID = "REPLACE_WITH_FORM_GUID";   // <-- set me
+const DOJO = {
+  t1_agent_native_canvas: "https://dojo.showcase.copilotkit.ai/?integration=langgraph-python&demo=shared-state-read-write",
+  t2_generative_ui:       "https://dojo.showcase.copilotkit.ai/?integration=langgraph-python&demo=gen-ui-tool-based",
+  t3_multi_agent:         "https://dojo.showcase.copilotkit.ai/?integration=langgraph-python&demo=subagents",
+  t4_agents_in_chat:      "https://www.copilotkit.ai/channels",
+  t5_vertical_lob:        "https://dojo.showcase.copilotkit.ai/?integration=langgraph-python&demo=hitl-in-app",
+};
+
+const params = new URLSearchParams(location.search);
+const email = (params.get("email") || "").trim().toLowerCase();
+const demo = params.get("demo") === "1" || FORM_GUID.startsWith("REPLACE");
+
+async function submit(track){
+  const url = `https://api.hsforms.com/submissions/v3/integration/submit/${PORTAL_ID}/${FORM_GUID}`;
+  const body = {
+    fields: [
+      {objectTypeId: "0-1", name: "email", value: email},
+      {objectTypeId: "0-1", name: "nurture_use_case", value: track},
+    ],
+    context: {pageUri: location.href, pageName: "What are you building? — CopilotKit"}
+  };
+  const r = await fetch(url, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body)});
+  if(!r.ok) throw new Error("submit " + r.status);
+}
+
+document.querySelectorAll(".card").forEach(btn=>{
+  btn.addEventListener("click", async ()=>{
+    const track = btn.dataset.track;
+    document.querySelectorAll(".card").forEach(b=>{b.disabled=true});
+    btn.classList.add("selected");
+    document.getElementById("spin").style.display="block";
+    try{
+      if(!demo && email) await submit(track);
+      // no email param (forwarded link) or demo mode: still show success + dojo link
+      document.getElementById("doneLink").href = DOJO[track] || document.getElementById("doneLink").href;
+      document.getElementById("ask").style.display="none";
+      document.getElementById("done").style.display="block";
+    }catch(e){
+      document.getElementById("ask").style.display="none";
+      document.getElementById("error").style.display="block";
+    }
+  });
+});
+</script>
+</body>
+</html>
