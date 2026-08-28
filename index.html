@@ -33,15 +33,48 @@
 
   .stack{display:flex;flex-direction:column;gap:12px}
   .tile{
-    display:flex;align-items:center;gap:18px;text-align:left;width:100%;
-    background:var(--card);border:1.5px solid var(--line);border-radius:18px;
-    padding:16px 20px;cursor:pointer;font:inherit;color:var(--ink);
+    position:relative;overflow:hidden;width:100%;text-align:left;
+    background:#0e0a26;border:1.5px solid var(--line);border-radius:18px;
+    padding:0;cursor:pointer;font:inherit;color:var(--ink);
     transition:border-color .15s, transform .12s, box-shadow .15s;
   }
+  .face{
+    position:relative;z-index:2;display:flex;align-items:center;gap:18px;
+    background:var(--card);border-radius:16.5px;padding:16px 20px;
+    transform-origin:50% 50%;
+    transition:transform .55s cubic-bezier(.2,.8,.25,1) 0s, box-shadow .55s ease 0s;
+  }
+  .tile:hover .face{           /* pull back after 1s sustained hover */
+    transform:perspective(700px) scale(.78) rotateX(6deg) translateY(-12px);
+    box-shadow:0 18px 40px rgba(1,5,7,.45);
+    transition-delay:1s, 1s;
+  }
+  .backdrop{
+    position:absolute;inset:0;z-index:1;overflow:hidden;border-radius:16.5px;
+    background:
+      radial-gradient(220px 120px at 80% 20%, rgba(105,99,255,.35), transparent 70%),
+      linear-gradient(120deg, #120635 0%, #1c1050 55%, #120635 100%);
+    background-size:200% 200%;
+    animation:drift-bg 7s ease-in-out infinite alternate;
+  }
+  @keyframes drift-bg{from{background-position:0% 0%}to{background-position:100% 100%}}
+  .backdrop .d{position:absolute;filter:brightness(3) saturate(.6);opacity:.5}
+  .backdrop .d1{width:38px;left:6%;bottom:8%;animation:float1 6s ease-in-out infinite}
+  .backdrop .d2{width:26px;left:44%;bottom:4%;opacity:.4;animation:float2 7.5s ease-in-out infinite}
+  .backdrop .d3{width:46px;right:4%;top:14%;opacity:.32;animation:float3 9s ease-in-out infinite}
+  @keyframes float1{0%,100%{transform:translate(0,0) rotate(-6deg)}50%{transform:translate(14px,-10px) rotate(6deg)}}
+  @keyframes float2{0%,100%{transform:translate(0,0) rotate(8deg)}50%{transform:translate(-12px,12px) rotate(-5deg)}}
+  @keyframes float3{0%,100%{transform:translate(0,0)}50%{transform:translate(-16px,8px) rotate(10deg)}}
+  .backdrop .peek{
+    position:absolute;left:50%;transform:translateX(-50%);bottom:7px;color:#cfcaff;font-size:11.5px;font-weight:700;
+    opacity:0;transition:opacity .4s ease 0s;
+  }
+  .tile:hover .backdrop .peek{opacity:1;transition-delay:1.35s}
   .tile:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 28px rgba(18,6,53,.10)}
   .tile:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   .tile[disabled]{opacity:.45;cursor:default;transform:none;box-shadow:none}
   .tile.selected{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+  .tile.selected .face,.tile[disabled] .face{transform:none !important;transition-delay:0s !important}
 
   .iconbox{position:relative;flex:0 0 74px;height:74px;display:grid;place-items:center}
   .iconbox img{width:56px;height:56px;transform-origin:50% 100%}
@@ -109,7 +142,8 @@
   footer{padding:24px;text-align:center;color:#8b87a0;font-size:12px;line-height:1.7}
   footer a{color:var(--accent);text-decoration:none}
   @media (prefers-reduced-motion: reduce){
-    .iconbox img,.ask .iconbox img,.ask .bubble{animation:none !important}
+    .iconbox img,.ask .iconbox img,.ask .bubble,.backdrop,.backdrop .d{animation:none !important}
+    .tile:hover .face{transform:none;transition-delay:0s}
   }
 </style>
 </head>
@@ -126,34 +160,70 @@
 
     <div class="stack" role="group" aria-label="What are you building?">
       <button class="tile t1" data-track="t1_agent_native_canvas">
+        <span class="backdrop" aria-hidden="true">
+          <img class="d d1" src="icons/t1.svg" alt=""><img class="d d2" src="icons/t1.svg" alt=""><img class="d d3" src="icons/t1.svg" alt="">
+          <span class="peek">↩ pick this to dive in</span>
+        </span>
+        <span class="face">
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t1.svg" alt=""></span>
         <span class="tbody"><h2>Agent-native canvas</h2><p>The agent and your users work the same surface — shared state, live.</p></span>
         <span class="arrow">→</span>
+        </span>
       </button>
       <button class="tile t2" data-track="t2_generative_ui">
+        <span class="backdrop" aria-hidden="true">
+          <img class="d d1" src="icons/t2.svg" alt=""><img class="d d2" src="icons/t2.svg" alt=""><img class="d d3" src="icons/t2.svg" alt="">
+          <span class="peek">↩ pick this to dive in</span>
+        </span>
+        <span class="face">
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t2.svg" alt=""></span>
         <span class="tbody"><h2>Generative UI</h2><p>Agents render real components in your app — whatever the moment needs.</p></span>
         <span class="arrow">→</span>
+        </span>
       </button>
       <button class="tile t3" data-track="t3_multi_agent">
+        <span class="backdrop" aria-hidden="true">
+          <img class="d d1" src="icons/t3.svg" alt=""><img class="d d2" src="icons/t3.svg" alt=""><img class="d d3" src="icons/t3.svg" alt="">
+          <span class="peek">↩ pick this to dive in</span>
+        </span>
+        <span class="face">
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t3.svg" alt=""></span>
         <span class="tbody"><h2>Multi-agent orchestration</h2><p>Several specialized agents, coordinated — one coherent experience.</p></span>
         <span class="arrow">→</span>
+        </span>
       </button>
       <button class="tile t4" data-track="t4_agents_in_chat">
+        <span class="backdrop" aria-hidden="true">
+          <img class="d d1" src="icons/t4.svg" alt=""><img class="d d2" src="icons/t4.svg" alt=""><img class="d d3" src="icons/t4.svg" alt="">
+          <span class="peek">↩ pick this to dive in</span>
+        </span>
+        <span class="face">
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t4.svg" alt=""></span>
         <span class="tbody"><h2>Agents in Slack / Teams</h2><p>Your agent where your users already work — channels, threads, actions.</p></span>
         <span class="arrow">→</span>
+        </span>
       </button>
       <button class="tile t5" data-track="t5_vertical_lob">
+        <span class="backdrop" aria-hidden="true">
+          <img class="d d1" src="icons/t5.svg" alt=""><img class="d d2" src="icons/t5.svg" alt=""><img class="d d3" src="icons/t5.svg" alt="">
+          <span class="peek">↩ pick this to dive in</span>
+        </span>
+        <span class="face">
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t5.svg" alt=""></span>
         <span class="tbody"><h2>A vertical / LOB copilot</h2><p>A domain copilot that acts — approvals, guardrails, audit trail.</p></span>
         <span class="arrow">→</span>
+        </span>
       </button>
       <button class="tile tother" data-track="other" id="otherTile">
+        <span class="backdrop" aria-hidden="true">
+          <img class="d d1" src="icons/other.svg" alt=""><img class="d d2" src="icons/other.svg" alt=""><img class="d d3" src="icons/other.svg" alt="">
+          <span class="peek">↩ pick this to dive in</span>
+        </span>
+        <span class="face">
         <span class="iconbox"><span class="bubble">Something else?</span><img src="icons/other.svg" alt=""></span>
         <span class="tbody"><h2>Other</h2><p>None of these fit? Tell us in a sentence — a human reads it.</p></span>
         <span class="arrow">→</span>
+        </span>
       </button>
 
       <div id="otherForm">
