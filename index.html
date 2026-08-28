@@ -44,11 +44,9 @@
     transform-origin:50% 50%;
     transition:transform .55s cubic-bezier(.2,.8,.25,1) 0s, box-shadow .55s ease 0s;
   }
-  .tile:hover .face{           /* pull back after 1s sustained hover */
-    transform:perspective(700px) scale(.78) rotateX(6deg) translateY(-12px);
-    box-shadow:0 18px 40px rgba(1,5,7,.45);
-    transition-delay:1s, 1s;
-  }
+  /* sliding-panel reveal after 1s sustained hover; direction alternates per row */
+  .tile:nth-of-type(odd):hover .face{transform:translateX(44%);box-shadow:-14px 0 32px rgba(1,5,7,.45);transition-delay:1s,1s}
+  .tile:nth-of-type(even):hover .face{transform:translateX(-44%);box-shadow:14px 0 32px rgba(1,5,7,.45);transition-delay:1s,1s}
   .backdrop{
     position:absolute;inset:0;z-index:1;overflow:hidden;border-radius:16.5px;
     background:
@@ -58,18 +56,78 @@
     animation:drift-bg 7s ease-in-out infinite alternate;
   }
   @keyframes drift-bg{from{background-position:0% 0%}to{background-position:100% 100%}}
-  .backdrop .d{position:absolute;filter:brightness(3) saturate(.6);opacity:.5}
-  .backdrop .d1{width:38px;left:6%;bottom:8%;animation:float1 6s ease-in-out infinite}
-  .backdrop .d2{width:26px;left:44%;bottom:4%;opacity:.4;animation:float2 7.5s ease-in-out infinite}
-  .backdrop .d3{width:46px;right:4%;top:14%;opacity:.32;animation:float3 9s ease-in-out infinite}
-  @keyframes float1{0%,100%{transform:translate(0,0) rotate(-6deg)}50%{transform:translate(14px,-10px) rotate(6deg)}}
-  @keyframes float2{0%,100%{transform:translate(0,0) rotate(8deg)}50%{transform:translate(-12px,12px) rotate(-5deg)}}
-  @keyframes float3{0%,100%{transform:translate(0,0)}50%{transform:translate(-16px,8px) rotate(10deg)}}
-  .backdrop .peek{
-    position:absolute;left:50%;transform:translateX(-50%);bottom:7px;color:#cfcaff;font-size:11.5px;font-weight:700;
-    opacity:0;transition:opacity .4s ease 0s;
-  }
-  .tile:hover .backdrop .peek{opacity:1;transition-delay:1.35s}
+  /* --- scenes: little machines running under each panel --- */
+  .scene{position:absolute;top:0;bottom:0;width:44%;}
+  .tile:nth-of-type(odd) .scene{left:0}
+  .tile:nth-of-type(even) .scene{right:0}
+  .scene i{position:absolute;display:block}
+  .hint{position:absolute;bottom:8px;width:100%;text-align:center;color:#cfcaff;font-size:11px;font-weight:700;opacity:0;transition:opacity .4s ease 0s}
+  .tile:hover .hint{opacity:.95;transition-delay:1.4s}
+
+  /* t1 · canvas: grid, a cursor drawing a shape */
+  .sc1 .grid{inset:10px 14px 26px;background:
+    linear-gradient(rgba(105,99,255,.22) 1px,transparent 1px) 0 0/16px 16px,
+    linear-gradient(90deg,rgba(105,99,255,.22) 1px,transparent 1px) 0 0/16px 16px;border-radius:8px}
+  .sc1 .draw{left:26px;top:22px;width:54px;height:34px;border:2px solid #8f86ff;border-radius:6px;
+    transform-origin:0 0;animation:drawIn 3.2s ease-in-out infinite}
+  @keyframes drawIn{0%{transform:scale(0,0)}35%{transform:scale(1,.15)}60%,78%{transform:scale(1,1)}100%{transform:scale(0,0)}}
+  .sc1 .cur{width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 10px #8f86ff;
+    left:22px;top:18px;animation:curMove 3.2s ease-in-out infinite}
+  @keyframes curMove{0%{transform:translate(0,0)}35%{transform:translate(56px,4px)}60%{transform:translate(56px,36px)}78%{transform:translate(0,36px)}100%{transform:translate(0,0)}}
+
+  /* t2 · gen UI: blocks assembling */
+  .sc2 .b{left:18%;width:56%;height:14px;border-radius:5px;background:#8f86ff;opacity:0}
+  .sc2 .b1{top:22%;animation:blk 2.8s ease infinite}
+  .sc2 .b2{top:42%;width:42%;background:#6963ff;animation:blk 2.8s .3s ease infinite}
+  .sc2 .b3{top:62%;width:66%;background:#cfcaff;animation:blk 2.8s .6s ease infinite}
+  @keyframes blk{0%{opacity:0;transform:translateY(14px) scaleX(.6)}18%,80%{opacity:1;transform:translateY(0) scaleX(1)}100%{opacity:0;transform:translateY(-6px)}}
+
+  /* t3 · multi-agent: nodes + pulse traveling the links */
+  .sc3 .nd{width:14px;height:14px;border-radius:50%;background:#8f86ff;box-shadow:0 0 10px rgba(143,134,255,.8)}
+  .sc3 .n1{left:16%;top:24%}.sc3 .n2{left:58%;top:38%}.sc3 .n3{left:30%;top:64%}
+  .sc3 .nd{animation:ndp 2.4s ease infinite}
+  .sc3 .n2{animation-delay:.8s}.sc3 .n3{animation-delay:1.6s}
+  @keyframes ndp{0%,100%{transform:scale(1)}12%{transform:scale(1.5)}24%{transform:scale(1)}}
+  .sc3 .lk{height:2px;background:rgba(143,134,255,.5);transform-origin:0 50%}
+  .sc3 .lk1{left:calc(16% + 7px);top:calc(24% + 7px);width:44%;transform:rotate(14deg)}
+  .sc3 .lk2{left:calc(30% + 7px);top:calc(64% + 7px);width:36%;transform:rotate(-40deg)}
+  .sc3 .pl{width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff;
+    left:16%;top:24%;animation:plv 2.4s linear infinite}
+  @keyframes plv{0%{left:16%;top:24%}33%{left:58%;top:38%}66%{left:30%;top:64%}100%{left:16%;top:24%}}
+
+  /* t4 · chat: bubbles typing + replying */
+  .sc4 .bub{border-radius:12px;background:#8f86ff}
+  .sc4 .ba{left:12%;top:22%;width:52%;height:26px;border-bottom-left-radius:3px;display:flex;align-items:center;justify-content:center;gap:4px;
+    animation:bshow 3s ease infinite}
+  .sc4 .dt{position:static;width:5px;height:5px;border-radius:50%;background:#120635;animation:typn 1s ease infinite}
+  .sc4 .dt:nth-child(2){animation-delay:.15s}.sc4 .dt:nth-child(3){animation-delay:.3s}
+  @keyframes typn{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  .sc4 .bb{right:12%;top:58%;width:38%;height:20px;background:#cfcaff;border-bottom-right-radius:3px;opacity:0;
+    animation:brep 3s ease infinite}
+  @keyframes bshow{0%{opacity:0;transform:translateY(6px)}12%,70%{opacity:1;transform:translateY(0)}90%,100%{opacity:0}}
+  @keyframes brep{0%,45%{opacity:0;transform:translateY(6px)}58%,82%{opacity:1;transform:translateY(0)}95%,100%{opacity:0}}
+
+  /* t5 · workflow: steps checking off over a progress bar */
+  .sc5 .bar{left:14%;right:14%;top:48%;height:3px;background:rgba(143,134,255,.35);border-radius:2px;overflow:hidden}
+  .sc5 .bar::after{content:"";position:absolute;inset:0;background:#8f86ff;transform-origin:0 50%;animation:fill 3s ease-in-out infinite}
+  @keyframes fill{0%{transform:scaleX(0)}70%,90%{transform:scaleX(1)}100%{transform:scaleX(0)}}
+  .sc5 .st{width:18px;height:18px;border-radius:50%;top:calc(48% - 8px);background:#1c1050;border:2px solid #8f86ff;
+    color:#fff;font-style:normal}
+  .sc5 .st::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;font-size:10px;color:#fff;opacity:0}
+  .sc5 .s1{left:12%;animation:stp 3s ease infinite}.sc5 .s2{left:44%;animation:stp 3s .7s ease infinite}.sc5 .s3{left:76%;animation:stp 3s 1.4s ease infinite}
+  @keyframes stp{0%,10%{background:#1c1050}20%,85%{background:#6963ff}100%{background:#1c1050}}
+  .sc5 .s1::after{animation:chk 3s ease infinite}.sc5 .s2::after{animation:chk 3s .7s ease infinite}.sc5 .s3::after{animation:chk 3s 1.4s ease infinite}
+  @keyframes chk{0%,15%{opacity:0}25%,85%{opacity:1}100%{opacity:0}}
+
+  /* other · meshed gears turning */
+  .sc6 .gear{border-radius:50%;
+    background:repeating-conic-gradient(#8f86ff 0 22deg, transparent 22deg 45deg);
+    -webkit-mask:radial-gradient(circle, transparent 0 22%, #000 23% 72%, transparent 73%);
+            mask:radial-gradient(circle, transparent 0 22%, #000 23% 72%, transparent 73%);}
+  .sc6 .g1{width:64px;height:64px;left:16%;top:20%;animation:spin 6s linear infinite}
+  .sc6 .g2{width:44px;height:44px;left:52%;top:48%;animation:spinr 6s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes spinr{from{transform:rotate(22deg)}to{transform:rotate(-338deg)}}
   .tile:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 28px rgba(18,6,53,.10)}
   .tile:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   .tile[disabled]{opacity:.45;cursor:default;transform:none;box-shadow:none}
@@ -142,8 +200,8 @@
   footer{padding:24px;text-align:center;color:#8b87a0;font-size:12px;line-height:1.7}
   footer a{color:var(--accent);text-decoration:none}
   @media (prefers-reduced-motion: reduce){
-    .iconbox img,.ask .iconbox img,.ask .bubble,.backdrop,.backdrop .d{animation:none !important}
-    .tile:hover .face{transform:none;transition-delay:0s}
+    .iconbox img,.ask .iconbox img,.ask .bubble,.backdrop,.scene i,.scene i::after,.sc5 .bar::after{animation:none !important}
+    .tile:hover .face{transform:none !important;transition-delay:0s !important}
   }
 </style>
 </head>
@@ -160,10 +218,7 @@
 
     <div class="stack" role="group" aria-label="What are you building?">
       <button class="tile t1" data-track="t1_agent_native_canvas">
-        <span class="backdrop" aria-hidden="true">
-          <img class="d d1" src="icons/t1.svg" alt=""><img class="d d2" src="icons/t1.svg" alt=""><img class="d d3" src="icons/t1.svg" alt="">
-          <span class="peek">↩ pick this to dive in</span>
-        </span>
+        <span class="backdrop" aria-hidden="true"><span class="scene sc1"><i class="grid"></i><i class="draw"></i><i class="cur"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t1.svg" alt=""></span>
         <span class="tbody"><h2>Agent-native canvas</h2><p>The agent and your users work the same surface — shared state, live.</p></span>
@@ -171,10 +226,7 @@
         </span>
       </button>
       <button class="tile t2" data-track="t2_generative_ui">
-        <span class="backdrop" aria-hidden="true">
-          <img class="d d1" src="icons/t2.svg" alt=""><img class="d d2" src="icons/t2.svg" alt=""><img class="d d3" src="icons/t2.svg" alt="">
-          <span class="peek">↩ pick this to dive in</span>
-        </span>
+        <span class="backdrop" aria-hidden="true"><span class="scene sc2"><i class="b b1"></i><i class="b b2"></i><i class="b b3"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t2.svg" alt=""></span>
         <span class="tbody"><h2>Generative UI</h2><p>Agents render real components in your app — whatever the moment needs.</p></span>
@@ -182,10 +234,7 @@
         </span>
       </button>
       <button class="tile t3" data-track="t3_multi_agent">
-        <span class="backdrop" aria-hidden="true">
-          <img class="d d1" src="icons/t3.svg" alt=""><img class="d d2" src="icons/t3.svg" alt=""><img class="d d3" src="icons/t3.svg" alt="">
-          <span class="peek">↩ pick this to dive in</span>
-        </span>
+        <span class="backdrop" aria-hidden="true"><span class="scene sc3"><i class="lk lk1"></i><i class="lk lk2"></i><i class="nd n1"></i><i class="nd n2"></i><i class="nd n3"></i><i class="pl"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t3.svg" alt=""></span>
         <span class="tbody"><h2>Multi-agent orchestration</h2><p>Several specialized agents, coordinated — one coherent experience.</p></span>
@@ -193,10 +242,7 @@
         </span>
       </button>
       <button class="tile t4" data-track="t4_agents_in_chat">
-        <span class="backdrop" aria-hidden="true">
-          <img class="d d1" src="icons/t4.svg" alt=""><img class="d d2" src="icons/t4.svg" alt=""><img class="d d3" src="icons/t4.svg" alt="">
-          <span class="peek">↩ pick this to dive in</span>
-        </span>
+        <span class="backdrop" aria-hidden="true"><span class="scene sc4"><i class="bub ba"><i class="dt"></i><i class="dt"></i><i class="dt"></i></i><i class="bub bb"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t4.svg" alt=""></span>
         <span class="tbody"><h2>Agents in Slack / Teams</h2><p>Your agent where your users already work — channels, threads, actions.</p></span>
@@ -204,10 +250,7 @@
         </span>
       </button>
       <button class="tile t5" data-track="t5_vertical_lob">
-        <span class="backdrop" aria-hidden="true">
-          <img class="d d1" src="icons/t5.svg" alt=""><img class="d d2" src="icons/t5.svg" alt=""><img class="d d3" src="icons/t5.svg" alt="">
-          <span class="peek">↩ pick this to dive in</span>
-        </span>
+        <span class="backdrop" aria-hidden="true"><span class="scene sc5"><i class="bar"></i><i class="st s1"></i><i class="st s2"></i><i class="st s3"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t5.svg" alt=""></span>
         <span class="tbody"><h2>A vertical / LOB copilot</h2><p>A domain copilot that acts — approvals, guardrails, audit trail.</p></span>
@@ -215,10 +258,7 @@
         </span>
       </button>
       <button class="tile tother" data-track="other" id="otherTile">
-        <span class="backdrop" aria-hidden="true">
-          <img class="d d1" src="icons/other.svg" alt=""><img class="d d2" src="icons/other.svg" alt=""><img class="d d3" src="icons/other.svg" alt="">
-          <span class="peek">↩ pick this to dive in</span>
-        </span>
+        <span class="backdrop" aria-hidden="true"><span class="scene sc6"><i class="gear g1"></i><i class="gear g2"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
         <span class="iconbox"><span class="bubble">Something else?</span><img src="icons/other.svg" alt=""></span>
         <span class="tbody"><h2>Other</h2><p>None of these fit? Tell us in a sentence — a human reads it.</p></span>
