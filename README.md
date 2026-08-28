@@ -1,4 +1,4 @@
-# "What are you building?" — preference page (handoff)
+# "What are you building?" — preference page
 
 One-question page that lets a contact self-select their use case with a single click.
 Sets the HubSpot contact property `nurture_use_case`, which drives the Use-Case Nurture
@@ -6,20 +6,26 @@ workflow branching. **Bot-proof by design:** email security scanners follow link
 not click buttons inside a page — so unlike raw email-link tracking (which produced 19/19
 bot "selections" on the welcome send), every submission here is a human.
 
-Experience: Linktree-style tile stack; each Noun Project icon (brand-colored SVG) idles with a bob, and tiles take turns doing a jump-and-squash with an ‘Is this one?’ bubble (attract loop; hover triggers it too; respects prefers-reduced-motion). ‘Other’ opens an inline one-line form → submits `other` + free text.
+Experience: Linktree-style tile stack; each icon idles with a bob, and tiles take turns
+doing a jump-and-squash with an "Is this one?" bubble (attract loop; hover triggers it
+too; respects prefers-reduced-motion). Sustained hover slides the tile open to reveal a
+small animated scene. "Other" opens an inline one-line form → submits `other` + free text.
 
-Styled with CopilotKit's **official brand system** — sourced from the
-`copilotkit-branding` + `copilotkit-ui-theme` skills in `CopilotKit/internal-skills`
-(cached in `.skill-cache/`): `#dedee9` lavender-gray surface with the signature
-blurred color circles, white cards, `#010507` ink / `#57575b` secondary,
-lilac `#BEC2FF` + mint `#85ECCE` accents, Plus Jakarta Sans body + Spline Sans Mono
-uppercase buttons/labels, glass (white/50 + white border) dock and thank-you card,
-and the authoritative `logo-full.svg` asset (never redrawn).
+**Styling:** CopilotKit's official brand system, marketing mode — `#f7f7f9` surface with
+ambient lilac/mint edge glows, white cards, `#010507` ink, black pill CTAs, gradient
+headline accent, Plus Jakarta Sans (Google Fonts CDN), and the official logo assets
+(never redrawn). Floating dock: Talk to an engineer / Docs / Discord.
+
+**No build, no dependencies, no backend.** One HTML file plus static assets; the only
+network calls are the Google Fonts CDN and the HubSpot Forms API on submit.
+
+Live preview: **https://preference-page.vercel.app/?demo=1** (demo mode — full UX, no submission).
 
 ## Files
-- `index.html` — the whole page (self-contained; one CDN font link)
-- `logo-full.svg` / `logo-mark.svg` — official CopilotKit logo assets (from internal-skills)
-- `.skill-cache/` — the brand rules, design tokens, and component specs the styling follows
+- `index.html` — the whole page
+- `logo-full.svg` / `logo-mark.svg` — official CopilotKit logo assets (header + favicon)
+- `icons/` — the six tile icons (Noun Project, licensed; attribution in `icons/ATTRIBUTION.txt` and the page footer)
+- `_previews/` — current screenshots
 
 ## Go-live checklist (CopilotKit team, ~10 min)
 1. **Create the HubSpot form** (portal 45532593 → Marketing → Forms → embedded form):
@@ -31,8 +37,10 @@ and the authoritative `logo-full.svg` asset (never redrawn).
    - Turn OFF reCAPTCHA (submissions come via the Forms API; the button-click is the bot filter)
    - Copy the **form GUID** (in the form's embed code / URL)
 2. **Set the GUID** in `index.html` → `const FORM_GUID = "…"`.
-3. **Host** both files anywhere static (a `/what-are-you-building` path on the site,
-   Vercel, Netlify — no build step, no server).
+3. **Host** the repo contents — `index.html`, both logo SVGs, and the `icons/` folder,
+   keeping relative paths — anywhere static (a `/what-are-you-building` path on the site,
+   Vercel, Netlify — no build step, no server). In Next.js: drop the files into
+   `public/what-are-you-building/`.
 4. **Link to it from emails** as:
    `https://<host>/?email={{contact.email}}`
    The HubSpot personalization token identifies the recipient — no typing for them.
