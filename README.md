@@ -6,6 +6,8 @@ workflow branching. **Bot-proof by design:** email security scanners follow link
 not click buttons inside a page — so unlike raw email-link tracking (which produced 19/19
 bot "selections" on the welcome send), every submission here is a human.
 
+Experience: Linktree-style tile stack; each Noun Project icon (brand-colored SVG) idles with a bob, and tiles take turns doing a jump-and-squash with an ‘Is this one?’ bubble (attract loop; hover triggers it too; respects prefers-reduced-motion). ‘Other’ opens an inline one-line form → submits `other` + free text.
+
 Styled to match copilotkit.ai: Plus Jakarta Sans, #EDEDF5 background, #120635 ink,
 #6963ff accent, pill buttons, real logo asset.
 
@@ -18,6 +20,8 @@ Styled to match copilotkit.ai: Plus Jakarta Sans, #EDEDF5 background, #120635 in
    - Name: `Nurture · Use-Case Selection (preference page)`
    - Field 1: **Email** (required)
    - Field 2: contact property **"Nurture · Use Case"** (`nurture_use_case`) — hidden field
+   - Field 3: contact property **"Nurture · Use Case (other, free text)"** (`nurture_use_case_other`) — hidden field
+     (both properties already exist in the portal; the enum includes an `other` option)
    - Turn OFF reCAPTCHA (submissions come via the Forms API; the button-click is the bot filter)
    - Copy the **form GUID** (in the form's embed code / URL)
 2. **Set the GUID** in `index.html` → `const FORM_GUID = "…"`.
