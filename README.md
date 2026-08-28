@@ -8,12 +8,18 @@ bot "selections" on the welcome send), every submission here is a human.
 
 Experience: Linktree-style tile stack; each Noun Project icon (brand-colored SVG) idles with a bob, and tiles take turns doing a jump-and-squash with an ‘Is this one?’ bubble (attract loop; hover triggers it too; respects prefers-reduced-motion). ‘Other’ opens an inline one-line form → submits `other` + free text.
 
-Styled to match copilotkit.ai: Plus Jakarta Sans, #EDEDF5 background, #120635 ink,
-#6963ff accent, pill buttons, real logo asset.
+Styled with CopilotKit's **official brand system** — sourced from the
+`copilotkit-branding` + `copilotkit-ui-theme` skills in `CopilotKit/internal-skills`
+(cached in `.skill-cache/`): `#dedee9` lavender-gray surface with the signature
+blurred color circles, white cards, `#010507` ink / `#57575b` secondary,
+lilac `#BEC2FF` + mint `#85ECCE` accents, Plus Jakarta Sans body + Spline Sans Mono
+uppercase buttons/labels, glass (white/50 + white border) dock and thank-you card,
+and the authoritative `logo-full.svg` asset (never redrawn).
 
 ## Files
 - `index.html` — the whole page (self-contained; one CDN font link)
-- `cpk-logo.svg` — CopilotKit logo (referenced by the page)
+- `logo-full.svg` / `logo-mark.svg` — official CopilotKit logo assets (from internal-skills)
+- `.skill-cache/` — the brand rules, design tokens, and component specs the styling follows
 
 ## Go-live checklist (CopilotKit team, ~10 min)
 1. **Create the HubSpot form** (portal 45532593 → Marketing → Forms → embedded form):

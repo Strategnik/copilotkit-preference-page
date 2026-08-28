@@ -8,42 +8,70 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* CopilotKit design tokens — from internal-skills/copilotkit-ui-theme (verbatim) */
   :root{
-    --bg:#e9ebf3; --ink:#120635; --heading:#010507; --accent:#6963ff;
-    --card:#ffffff; --line:#e2e1ee; --muted:#5d5776;
+    --surface-main:#dedee9;
+    --surface-container:#ffffff;
+    --border-default:#ffffff;
+    --border-container:#dbdbe5;
+    --text-primary:#010507;
+    --text-secondary:#57575b;
+    --text-disabled:#838389;
+    --text-invert:#ffffff;
+    --white-50:rgba(255,255,255,.5);
+    --white-70:rgba(255,255,255,.7);
+    --lilac:#BEC2FF;            /* color/lilac/400 */
+    --lilac-10:#BEC2FF1A;       /* surfaceContainerActive */
+    --mint:#85ECCE;             /* color/mint/400 */
+    --mint-800:#189370;
+    --grey-900:#2b2b2b;
+    --elevation-sm:0px 1px 3px 0px rgba(1,5,7,.08);
+    --elevation-lg:0px 16px 24px -8px rgba(1,5,7,.12);
+    --mono:"Spline Sans Mono",ui-monospace,SFMono-Regular,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
-    background:
-      radial-gradient(700px 400px at 85% -5%, rgba(105,99,255,.10), transparent 60%),
-      radial-gradient(600px 380px at 0% 100%, rgba(105,99,255,.07), transparent 55%),
-      var(--bg);
-    color:var(--ink);
-    font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--surface-main);
+    color:var(--text-primary);
+    font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;
   }
+  /* Signature background blur circles — CopilotCloud Figma specs */
+  .bgfx{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+  .bgfx i{position:absolute;display:block;border-radius:50%;filter:blur(103px)}
+  .bgfx .c1{width:446px;height:446px;right:-60px;top:11px;background:rgba(255,172,77,.2)}
+  .bgfx .c2{width:609px;height:609px;right:-220px;bottom:-180px;background:#C9C9DA}
+  .bgfx .c3{width:609px;height:609px;left:35%;top:-365px;background:#C9C9DA}
+  .bgfx .c4{width:609px;height:609px;left:20%;bottom:-250px;background:#F3F3FC}
+  .bgfx .c5{width:446px;height:446px;left:6%;top:331px;background:rgba(255,243,136,.3)}
+  .bgfx .c6{width:446px;height:446px;left:-205px;bottom:-100px;background:rgba(255,172,77,.2)}
+  header,main,footer,.dock{position:relative;z-index:1}
+
   header{padding:26px clamp(20px,5vw,56px)}
-  header img{height:26px;display:block}
+  header img{height:32px;display:block}
   main{flex:1;width:100%;max-width:620px;margin:0 auto;padding:12px 20px 72px}
-  .eyebrow{font-size:12.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);text-align:center;margin-bottom:12px}
-  h1{font-size:clamp(34px,6.4vw,52px);font-weight:700;color:var(--heading);letter-spacing:-.02em;line-height:1.08;text-align:center;margin-bottom:14px}
-  .grad{background:linear-gradient(92deg,#4fd9c4 0%,#57d7c6 18%,#6fa8f5 62%,#8d86f8 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .sub{font-size:17px;color:var(--muted);text-align:center;max-width:520px;margin:0 auto 38px;line-height:1.6}
-  .sub b{color:var(--heading);font-weight:700}
+  h1{font-size:clamp(32px,6vw,56px);font-weight:600;color:var(--text-primary);letter-spacing:-.02em;line-height:1.15;text-align:center;margin-bottom:14px}
+  .sub{font-size:16px;color:var(--text-secondary);text-align:center;max-width:520px;margin:0 auto 34px;line-height:1.6}
+  .sub b{color:var(--text-primary);font-weight:600}
+
+  /* Section title with extending line — dojo sidebar pattern */
+  .seclabel{display:flex;align-items:center;gap:8px;padding:0 4px;margin-bottom:10px}
+  .seclabel span{font-size:10px;font-weight:400;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);white-space:nowrap}
+  .seclabel i{flex:1;height:1px;background:var(--border-container)}
 
   .stack{display:flex;flex-direction:column;gap:12px}
   .tile{
     position:relative;overflow:hidden;width:100%;text-align:left;
-    background:#0e0a26;border:0;border-radius:20px;
-    padding:0;cursor:pointer;font:inherit;color:var(--ink);
-    box-shadow:0 2px 6px rgba(18,6,53,.05), 0 10px 26px rgba(18,6,53,.07);
+    background:var(--text-primary);border:0;border-radius:16px;
+    padding:0;cursor:pointer;font:inherit;color:var(--text-primary);
+    box-shadow:var(--elevation-sm);
     transition:transform .14s, box-shadow .18s;
   }
   .face{
     position:relative;z-index:2;display:flex;align-items:center;gap:18px;
-    background:var(--card);border-radius:20px;padding:17px 22px;
+    background:var(--surface-container);border-radius:16px;padding:17px 22px;
     transform-origin:50% 50%;
     transition:transform .55s cubic-bezier(.2,.8,.25,1) 0s, box-shadow .55s ease 0s;
   }
@@ -51,10 +79,10 @@
   .tile:nth-of-type(odd):hover .face{transform:translateX(44%);box-shadow:-14px 0 32px rgba(1,5,7,.45);transition-delay:1s,1s}
   .tile:nth-of-type(even):hover .face{transform:translateX(-44%);box-shadow:14px 0 32px rgba(1,5,7,.45);transition-delay:1s,1s}
   .backdrop{
-    position:absolute;inset:0;z-index:1;overflow:hidden;border-radius:20px;
+    position:absolute;inset:0;z-index:1;overflow:hidden;border-radius:16px;
     background:
-      radial-gradient(220px 120px at 80% 20%, rgba(105,99,255,.35), transparent 70%),
-      linear-gradient(120deg, #120635 0%, #1c1050 55%, #120635 100%);
+      radial-gradient(220px 120px at 80% 20%, rgba(190,194,255,.28), transparent 70%),
+      linear-gradient(120deg, #010507 0%, #2b2b2b 55%, #010507 100%);
     background-size:200% 200%;
     animation:drift-bg 7s ease-in-out infinite alternate;
   }
@@ -64,34 +92,36 @@
   .tile:nth-of-type(odd) .scene{left:0}
   .tile:nth-of-type(even) .scene{right:0}
   .scene i{position:absolute;display:block}
-  .hint{position:absolute;bottom:8px;width:100%;text-align:center;color:#cfcaff;font-size:11px;font-weight:700;opacity:0;transition:opacity .4s ease 0s}
+  .hint{position:absolute;bottom:8px;width:100%;text-align:center;color:var(--lilac);
+    font-family:var(--mono);font-size:10px;font-weight:500;text-transform:lowercase;
+    opacity:0;transition:opacity .4s ease 0s}
   .tile:hover .hint{opacity:.95;transition-delay:1.4s}
 
   /* t1 · canvas: grid, a cursor drawing a shape */
   .sc1 .grid{inset:10px 14px 26px;background:
-    linear-gradient(rgba(105,99,255,.22) 1px,transparent 1px) 0 0/16px 16px,
-    linear-gradient(90deg,rgba(105,99,255,.22) 1px,transparent 1px) 0 0/16px 16px;border-radius:8px}
-  .sc1 .draw{left:26px;top:22px;width:54px;height:34px;border:2px solid #8f86ff;border-radius:6px;
+    linear-gradient(rgba(190,194,255,.22) 1px,transparent 1px) 0 0/16px 16px,
+    linear-gradient(90deg,rgba(190,194,255,.22) 1px,transparent 1px) 0 0/16px 16px;border-radius:8px}
+  .sc1 .draw{left:26px;top:22px;width:54px;height:34px;border:2px solid var(--lilac);border-radius:6px;
     transform-origin:0 0;animation:drawIn 3.2s ease-in-out infinite}
   @keyframes drawIn{0%{transform:scale(0,0)}35%{transform:scale(1,.15)}60%,78%{transform:scale(1,1)}100%{transform:scale(0,0)}}
-  .sc1 .cur{width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 10px #8f86ff;
+  .sc1 .cur{width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 10px var(--lilac);
     left:22px;top:18px;animation:curMove 3.2s ease-in-out infinite}
   @keyframes curMove{0%{transform:translate(0,0)}35%{transform:translate(56px,4px)}60%{transform:translate(56px,36px)}78%{transform:translate(0,36px)}100%{transform:translate(0,0)}}
 
   /* t2 · gen UI: blocks assembling */
-  .sc2 .b{left:18%;width:56%;height:14px;border-radius:5px;background:#8f86ff;opacity:0}
+  .sc2 .b{left:18%;width:56%;height:14px;border-radius:5px;background:var(--lilac);opacity:0}
   .sc2 .b1{top:22%;animation:blk 2.8s ease infinite}
-  .sc2 .b2{top:42%;width:42%;background:#6963ff;animation:blk 2.8s .3s ease infinite}
-  .sc2 .b3{top:62%;width:66%;background:#cfcaff;animation:blk 2.8s .6s ease infinite}
+  .sc2 .b2{top:42%;width:42%;background:var(--mint);animation:blk 2.8s .3s ease infinite}
+  .sc2 .b3{top:62%;width:66%;background:#EEE6FE;animation:blk 2.8s .6s ease infinite}
   @keyframes blk{0%{opacity:0;transform:translateY(14px) scaleX(.6)}18%,80%{opacity:1;transform:translateY(0) scaleX(1)}100%{opacity:0;transform:translateY(-6px)}}
 
   /* t3 · multi-agent: nodes + pulse traveling the links */
-  .sc3 .nd{width:14px;height:14px;border-radius:50%;background:#8f86ff;box-shadow:0 0 10px rgba(143,134,255,.8)}
+  .sc3 .nd{width:14px;height:14px;border-radius:50%;background:var(--lilac);box-shadow:0 0 10px rgba(190,194,255,.8)}
   .sc3 .n1{left:16%;top:24%}.sc3 .n2{left:58%;top:38%}.sc3 .n3{left:30%;top:64%}
   .sc3 .nd{animation:ndp 2.4s ease infinite}
   .sc3 .n2{animation-delay:.8s}.sc3 .n3{animation-delay:1.6s}
   @keyframes ndp{0%,100%{transform:scale(1)}12%{transform:scale(1.5)}24%{transform:scale(1)}}
-  .sc3 .lk{height:2px;background:rgba(143,134,255,.5);transform-origin:0 50%}
+  .sc3 .lk{height:2px;background:rgba(190,194,255,.5);transform-origin:0 50%}
   .sc3 .lk1{left:calc(16% + 7px);top:calc(24% + 7px);width:44%;transform:rotate(14deg)}
   .sc3 .lk2{left:calc(30% + 7px);top:calc(64% + 7px);width:36%;transform:rotate(-40deg)}
   .sc3 .pl{width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff;
@@ -99,53 +129,53 @@
   @keyframes plv{0%{left:16%;top:24%}33%{left:58%;top:38%}66%{left:30%;top:64%}100%{left:16%;top:24%}}
 
   /* t4 · chat: bubbles typing + replying */
-  .sc4 .bub{border-radius:12px;background:#8f86ff}
+  .sc4 .bub{border-radius:12px;background:var(--lilac)}
   .sc4 .ba{left:12%;top:22%;width:52%;height:26px;border-bottom-left-radius:3px;display:flex;align-items:center;justify-content:center;gap:4px;
     animation:bshow 3s ease infinite}
-  .sc4 .dt{position:static;width:5px;height:5px;border-radius:50%;background:#120635;animation:typn 1s ease infinite}
+  .sc4 .dt{position:static;width:5px;height:5px;border-radius:50%;background:#010507;animation:typn 1s ease infinite}
   .sc4 .dt:nth-child(2){animation-delay:.15s}.sc4 .dt:nth-child(3){animation-delay:.3s}
   @keyframes typn{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-  .sc4 .bb{right:12%;top:58%;width:38%;height:20px;background:#cfcaff;border-bottom-right-radius:3px;opacity:0;
+  .sc4 .bb{right:12%;top:58%;width:38%;height:20px;background:var(--mint);border-bottom-right-radius:3px;opacity:0;
     animation:brep 3s ease infinite}
   @keyframes bshow{0%{opacity:0;transform:translateY(6px)}12%,70%{opacity:1;transform:translateY(0)}90%,100%{opacity:0}}
   @keyframes brep{0%,45%{opacity:0;transform:translateY(6px)}58%,82%{opacity:1;transform:translateY(0)}95%,100%{opacity:0}}
 
   /* t5 · workflow: steps checking off over a progress bar */
-  .sc5 .bar{left:14%;right:14%;top:48%;height:3px;background:rgba(143,134,255,.35);border-radius:2px;overflow:hidden}
-  .sc5 .bar::after{content:"";position:absolute;inset:0;background:#8f86ff;transform-origin:0 50%;animation:fill 3s ease-in-out infinite}
+  .sc5 .bar{left:14%;right:14%;top:48%;height:3px;background:rgba(190,194,255,.35);border-radius:2px;overflow:hidden}
+  .sc5 .bar::after{content:"";position:absolute;inset:0;background:var(--lilac);transform-origin:0 50%;animation:fill 3s ease-in-out infinite}
   @keyframes fill{0%{transform:scaleX(0)}70%,90%{transform:scaleX(1)}100%{transform:scaleX(0)}}
-  .sc5 .st{width:18px;height:18px;border-radius:50%;top:calc(48% - 8px);background:#1c1050;border:2px solid #8f86ff;
+  .sc5 .st{width:18px;height:18px;border-radius:50%;top:calc(48% - 8px);background:var(--grey-900);border:2px solid var(--lilac);
     color:#fff;font-style:normal}
   .sc5 .st::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;font-size:10px;color:#fff;opacity:0}
   .sc5 .s1{left:12%;animation:stp 3s ease infinite}.sc5 .s2{left:44%;animation:stp 3s .7s ease infinite}.sc5 .s3{left:76%;animation:stp 3s 1.4s ease infinite}
-  @keyframes stp{0%,10%{background:#1c1050}20%,85%{background:#6963ff}100%{background:#1c1050}}
+  @keyframes stp{0%,10%{background:var(--grey-900)}20%,85%{background:var(--mint-800)}100%{background:var(--grey-900)}}
   .sc5 .s1::after{animation:chk 3s ease infinite}.sc5 .s2::after{animation:chk 3s .7s ease infinite}.sc5 .s3::after{animation:chk 3s 1.4s ease infinite}
   @keyframes chk{0%,15%{opacity:0}25%,85%{opacity:1}100%{opacity:0}}
 
   /* other · meshed gears turning */
   .sc6 .gear{border-radius:50%;
-    background:repeating-conic-gradient(#8f86ff 0 22deg, transparent 22deg 45deg);
+    background:repeating-conic-gradient(var(--lilac) 0 22deg, transparent 22deg 45deg);
     -webkit-mask:radial-gradient(circle, transparent 0 22%, #000 23% 72%, transparent 73%);
             mask:radial-gradient(circle, transparent 0 22%, #000 23% 72%, transparent 73%);}
   .sc6 .g1{width:64px;height:64px;left:16%;top:20%;animation:spin 6s linear infinite}
   .sc6 .g2{width:44px;height:44px;left:52%;top:48%;animation:spinr 6s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes spinr{from{transform:rotate(22deg)}to{transform:rotate(-338deg)}}
-  .tile:hover{transform:translateY(-3px);box-shadow:0 4px 10px rgba(18,6,53,.07), 0 18px 44px rgba(18,6,53,.13)}
-  .tile:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .tile:hover{transform:translateY(-2px);box-shadow:var(--elevation-lg)}
+  .tile:focus-visible{outline:3px solid var(--text-primary);outline-offset:2px}
   .tile[disabled]{opacity:.45;cursor:default;transform:none;box-shadow:none}
-  .tile.selected{box-shadow:0 0 0 2px var(--accent), 0 10px 26px rgba(18,6,53,.10)}
+  .tile.selected{box-shadow:0 0 0 2px var(--lilac), var(--elevation-lg)}
   .tile.selected .face,.tile[disabled] .face{transform:none !important;transition-delay:0s !important}
 
   .iconbox{position:relative;flex:0 0 74px;height:74px;display:grid;place-items:center}
   .iconbox img{width:56px;height:56px;transform-origin:50% 100%}
   .bubble{
     position:absolute;top:-16px;left:50%;transform:translateX(-50%) scale(0);
-    background:var(--heading);color:#fff;font-size:11px;font-weight:700;white-space:nowrap;
-    padding:5px 10px;border-radius:999px;pointer-events:none;opacity:0;
+    background:var(--text-primary);color:var(--text-invert);font-size:11px;font-weight:600;white-space:nowrap;
+    padding:5px 10px;border-radius:9999px;pointer-events:none;opacity:0;
   }
   .bubble::after{content:"";position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);
-    border:5px solid transparent;border-top-color:var(--heading);border-bottom:0}
+    border:5px solid transparent;border-top-color:var(--text-primary);border-bottom:0}
 
   /* idle bob for every icon, gently staggered */
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
@@ -174,61 +204,64 @@
   .tile:hover .bubble{opacity:1;transform:translateX(-50%) scale(1);transition:.15s}
   .tile:hover .iconbox img{animation:jump 1.6s cubic-bezier(.34,1.4,.44,1) 1}
 
-  .tbody h2{font-size:16.5px;font-weight:700;color:var(--heading);margin-bottom:3px}
-  .tbody p{font-size:13.5px;color:var(--muted);line-height:1.45}
-  .arrow{margin-left:auto;flex:0 0 auto;color:var(--accent);font-weight:800;font-size:18px;transition:transform .15s}
+  .tbody h2{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:3px}
+  .tbody p{font-size:13px;color:var(--text-secondary);line-height:1.5}
+  .arrow{margin-left:auto;flex:0 0 auto;color:var(--text-primary);font-weight:600;font-size:18px;transition:transform .15s}
   .tile:hover .arrow{transform:translateX(4px)}
 
   /* other form */
-  #otherForm{display:none;background:var(--card);border:1.5px solid var(--accent);border-radius:18px;padding:22px;margin-top:-2px}
-  #otherForm label{display:block;font-size:14px;font-weight:700;color:var(--heading);margin-bottom:10px}
+  #otherForm{display:none;background:var(--surface-container);border:1px solid var(--lilac);border-radius:16px;padding:22px;margin-top:-2px;box-shadow:var(--elevation-sm)}
+  #otherForm label{display:block;font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:10px}
   #otherForm textarea{
-    width:100%;min-height:96px;resize:vertical;border:1.5px solid var(--line);border-radius:12px;
-    padding:12px 14px;font:inherit;font-size:14.5px;color:var(--ink);background:#fbfbfe;
+    width:100%;min-height:96px;resize:vertical;border:1px solid var(--border-container);border-radius:8px;
+    padding:12px 14px;font:inherit;font-size:14px;color:var(--text-primary);background:#fafcfa;
   }
-  #otherForm textarea:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+  #otherForm textarea:focus{outline:2px solid var(--lilac);border-color:var(--lilac)}
   .pill{
-    display:inline-block;background:var(--heading);color:#fff;border:0;cursor:pointer;text-decoration:none;
-    font:inherit;font-weight:600;font-size:15px;padding:13px 26px;border-radius:999px;margin-top:14px;
+    display:inline-block;background:var(--text-primary);color:var(--text-invert);border:0;cursor:pointer;text-decoration:none;
+    font-family:var(--mono);font-weight:500;font-size:14px;text-transform:uppercase;letter-spacing:.02em;
+    padding:13px 26px;border-radius:9999px;margin-top:14px;
   }
-  .pill:hover{background:#221a3f}
+  .pill:hover{background:var(--grey-900)}
   .pill[disabled]{opacity:.5;cursor:default}
 
-  #done,#error{display:none;background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:44px 36px;text-align:center}
-  #done h2,#error h2{font-size:26px;font-weight:700;color:var(--heading);margin-bottom:10px}
-  #done p,#error p{color:var(--muted);font-size:16px;line-height:1.6;max-width:440px;margin:0 auto}
+  #done,#error{display:none;background:var(--white-70);border:2px solid var(--border-default);border-radius:16px;padding:44px 36px;text-align:center;box-shadow:var(--elevation-sm)}
+  #done h2,#error h2{font-size:24px;font-weight:600;color:var(--text-primary);margin-bottom:10px}
+  #done p,#error p{color:var(--text-secondary);font-size:16px;line-height:1.6;max-width:440px;margin:0 auto}
   #spin{display:none;margin:30px auto;width:34px;height:34px;border-radius:50%;
-    border:4px solid var(--line);border-top-color:var(--accent);animation:r .8s linear infinite}
+    border:4px solid var(--border-container);border-top-color:var(--lilac);animation:r .8s linear infinite}
   @keyframes r{to{transform:rotate(360deg)}}
-  footer{padding:24px;text-align:center;color:#8b87a0;font-size:12px;line-height:1.7}
-  footer a{color:var(--accent);text-decoration:none}
+  footer{padding:24px;text-align:center;color:var(--text-disabled);font-size:12px;line-height:1.7}
+  footer a{color:var(--text-secondary);text-decoration:none}
+  footer a:hover{text-decoration:underline}
 
   /* --- floating dock, bottom-center, labeled --- */
   .dock{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:50;
     display:flex;flex-direction:row;gap:10px;align-items:center;
-    background:rgba(255,255,255,.6);backdrop-filter:blur(10px);
-    padding:8px;border-radius:999px;
-    box-shadow:0 2px 8px rgba(18,6,53,.08), 0 14px 34px rgba(18,6,53,.14);}
+    background:var(--white-50);backdrop-filter:blur(10px);
+    border:2px solid var(--border-default);
+    padding:8px;border-radius:9999px;
+    box-shadow:var(--elevation-lg);}
   .dockbtn{
     display:flex;align-items:center;gap:8px;
-    height:44px;padding:0 18px;border-radius:999px;
-    background:#fff;color:var(--heading);text-decoration:none;
-    box-shadow:0 1px 3px rgba(18,6,53,.06);
+    height:44px;padding:0 18px;border-radius:9999px;
+    background:var(--surface-container);color:var(--text-primary);text-decoration:none;
+    box-shadow:var(--elevation-sm);
     transition:transform .15s, box-shadow .18s;
   }
   .dockbtn svg{width:20px;height:20px;flex:0 0 auto}
-  .dlabel{font-size:14px;font-weight:700;white-space:nowrap}
-  .dockbtn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(18,6,53,.16)}
-  .dockbtn.primary{background:var(--heading);color:#fff}
-  .dockbtn.primary:hover{background:#221a3f}
+  .dlabel{font-family:var(--mono);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
+  .dockbtn:hover{transform:translateY(-2px);box-shadow:var(--elevation-lg)}
+  .dockbtn.primary{background:var(--text-primary);color:var(--text-invert)}
+  .dockbtn.primary:hover{background:var(--grey-900)}
   .dockbtn.discord svg{color:#5865F2}
-  .dockbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .dockbtn:focus-visible{outline:3px solid var(--text-primary);outline-offset:2px}
   main{padding-bottom:120px}
   footer{padding-bottom:86px}
   @media (max-width:560px){
     .dock{gap:6px;padding:6px;bottom:12px;max-width:calc(100vw - 16px)}
     .dockbtn{height:40px;padding:0 12px}
-    .dlabel{font-size:12.5px}
+    .dlabel{font-size:10px}
   }
   @media (prefers-reduced-motion: reduce){
     .iconbox img,.ask .iconbox img,.ask .bubble,.backdrop,.scene i,.scene i::after,.sc5 .bar::after{animation:none !important}
@@ -237,15 +270,17 @@
 </style>
 </head>
 <body>
+<div class="bgfx" aria-hidden="true"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i><i class="c5"></i><i class="c6"></i></div>
 <header>
-  <a href="https://www.copilotkit.ai" aria-label="CopilotKit"><img src="cpk-logo.svg" alt="CopilotKit"></a>
+  <a href="https://www.copilotkit.ai" aria-label="CopilotKit"><img src="logo-full.svg" alt="CopilotKit"></a>
 </header>
 
 <main>
   <section id="ask">
-    <h1>Tell us what <span class="grad">you're building</span>.</h1>
+    <h1>Tell us what you're building.</h1>
     <p class="sub"><b>One click, better signal.</b> We'll point you at working demos, the right guides, and the builders in our community shipping the same pattern. Give us a hint — we'll introduce you around.</p>
 
+    <div class="seclabel" aria-hidden="true"><span>What are you building?</span><i></i></div>
     <div class="stack" role="group" aria-label="What are you building?">
       <button class="tile t1" data-track="t1_agent_native_canvas">
         <span class="backdrop" aria-hidden="true"><span class="scene sc1"><i class="grid"></i><i class="draw"></i><i class="cur"></i><span class="hint">click to open ↗</span></span></span>
