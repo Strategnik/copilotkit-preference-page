@@ -56,9 +56,16 @@
   header{padding:26px clamp(20px,5vw,56px)}
   header img{height:32px;display:block}
   main{flex:1;width:100%;max-width:620px;margin:0 auto;padding:12px 20px 72px}
-  h1{font-size:clamp(32px,6vw,56px);font-weight:600;color:var(--text-primary);letter-spacing:-.02em;line-height:1.15;text-align:center;margin-bottom:14px}
-  h1 .grad{background:linear-gradient(92deg,#4fd9c4 0%,#57d7c6 22%,#6fa8f5 64%,#8d86f8 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .sub{font-size:16px;color:var(--text-secondary);text-align:center;max-width:520px;margin:0 auto 34px;line-height:1.6}
+  h1{font-size:clamp(32px,6vw,56px);font-weight:600;color:var(--text-primary);letter-spacing:-.02em;line-height:1.15;text-align:left;margin-bottom:14px;
+    padding-top:16px;border-top:2px solid var(--text-primary);text-wrap:balance}
+  /* brand rule: gradients stay ambient, never the text's contrast mechanism —
+     accent is a lilac→mint marker sweep under ink text */
+  h1 .grad{
+    background:linear-gradient(90deg,rgba(190,194,255,.65),rgba(133,236,206,.7));
+    background-repeat:no-repeat;background-size:100% .42em;background-position:0 92%;
+    padding:0 .05em;border-radius:2px;
+  }
+  .sub{font-size:16px;color:var(--text-secondary);text-align:left;max-width:520px;margin:0 0 34px;line-height:1.6}
   .sub b{color:var(--text-primary);font-weight:600}
 
   /* Section title with extending line — dojo sidebar pattern */
@@ -172,6 +179,9 @@
   .tile.selected{box-shadow:0 0 0 2px var(--lilac), var(--elevation-lg)}
   .tile.selected .face,.tile[disabled] .face{transform:none !important;transition-delay:0s !important}
 
+  .idx{flex:0 0 40px;font-family:var(--mono);font-size:24px;line-height:1;font-weight:600;
+    letter-spacing:-.04em;color:#c6c6cf;transition:color .2s;text-align:left}
+  .tile:hover .idx,.tile.selected .idx{color:var(--text-primary)}
   .iconbox{position:relative;flex:0 0 74px;height:74px;display:grid;place-items:center}
   .iconbox img{width:56px;height:56px;transform-origin:50% 100%}
   .bubble{
@@ -290,6 +300,7 @@
       <button class="tile t1" data-track="t1_agent_native_canvas">
         <span class="backdrop" aria-hidden="true"><span class="scene sc1"><i class="grid"></i><i class="draw"></i><i class="cur"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
+        <span class="idx" aria-hidden="true">01</span>
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t1.svg" alt=""></span>
         <span class="tbody"><h2>Agent-native canvas</h2><p>The agent and your users work the same surface — shared state, live.</p></span>
         <span class="arrow">→</span>
@@ -298,6 +309,7 @@
       <button class="tile t2" data-track="t2_generative_ui">
         <span class="backdrop" aria-hidden="true"><span class="scene sc2"><i class="b b1"></i><i class="b b2"></i><i class="b b3"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
+        <span class="idx" aria-hidden="true">02</span>
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t2.svg" alt=""></span>
         <span class="tbody"><h2>Generative UI</h2><p>Agents render real components in your app — whatever the moment needs.</p></span>
         <span class="arrow">→</span>
@@ -306,6 +318,7 @@
       <button class="tile t3" data-track="t3_multi_agent">
         <span class="backdrop" aria-hidden="true"><span class="scene sc3"><i class="lk lk1"></i><i class="lk lk2"></i><i class="nd n1"></i><i class="nd n2"></i><i class="nd n3"></i><i class="pl"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
+        <span class="idx" aria-hidden="true">03</span>
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t3.svg" alt=""></span>
         <span class="tbody"><h2>Multi-agent orchestration</h2><p>Several specialized agents, coordinated — one coherent experience.</p></span>
         <span class="arrow">→</span>
@@ -314,6 +327,7 @@
       <button class="tile t4" data-track="t4_agents_in_chat">
         <span class="backdrop" aria-hidden="true"><span class="scene sc4"><i class="bub ba"><i class="dt"></i><i class="dt"></i><i class="dt"></i></i><i class="bub bb"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
+        <span class="idx" aria-hidden="true">04</span>
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t4.svg" alt=""></span>
         <span class="tbody"><h2>Agents in Slack / Teams</h2><p>Your agent where your users already work — channels, threads, actions.</p></span>
         <span class="arrow">→</span>
@@ -322,6 +336,7 @@
       <button class="tile t5" data-track="t5_vertical_lob">
         <span class="backdrop" aria-hidden="true"><span class="scene sc5"><i class="bar"></i><i class="st s1"></i><i class="st s2"></i><i class="st s3"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
+        <span class="idx" aria-hidden="true">05</span>
         <span class="iconbox"><span class="bubble">Is this one?</span><img src="icons/t5.svg" alt=""></span>
         <span class="tbody"><h2>A vertical / LOB copilot</h2><p>A domain copilot that acts — approvals, guardrails, audit trail.</p></span>
         <span class="arrow">→</span>
@@ -330,6 +345,7 @@
       <button class="tile tother" data-track="other" id="otherTile">
         <span class="backdrop" aria-hidden="true"><span class="scene sc6"><i class="gear g1"></i><i class="gear g2"></i><span class="hint">click to open ↗</span></span></span>
         <span class="face">
+        <span class="idx" aria-hidden="true">06</span>
         <span class="iconbox"><span class="bubble">Something else?</span><img src="icons/other.svg" alt=""></span>
         <span class="tbody"><h2>Other</h2><p>None of these fit? Tell us in a sentence — a human reads it.</p></span>
         <span class="arrow">→</span>
