@@ -56,8 +56,10 @@
   header{padding:26px clamp(20px,5vw,56px)}
   header img{height:32px;display:block}
   main{flex:1;width:100%;max-width:620px;margin:0 auto;padding:12px 20px 72px}
-  h1{font-size:clamp(32px,6vw,56px);font-weight:600;color:var(--text-primary);letter-spacing:-.02em;line-height:1.15;text-align:left;margin-bottom:14px;
-    padding-top:16px;border-top:2px solid var(--text-primary);text-wrap:balance}
+  h1{font-size:clamp(32px,6vw,56px);font-weight:600;color:var(--text-primary);letter-spacing:-.02em;line-height:1.15;text-align:left;margin-bottom:14px;text-wrap:balance}
+  /* short gradient dash instead of a hard rule — structure without severity */
+  h1::before{content:"";display:block;width:64px;height:5px;border-radius:3px;
+    background:linear-gradient(90deg,var(--lilac),var(--mint));margin-bottom:20px}
   /* brand rule: gradients stay ambient, never the text's contrast mechanism —
      accent is a lilac→mint marker sweep under ink text */
   h1 .grad{
@@ -221,7 +223,7 @@
 
   .tbody h2{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:3px}
   .tbody p{font-size:13px;color:var(--text-secondary);line-height:1.5}
-  .arrow{margin-left:auto;flex:0 0 auto;color:var(--text-primary);font-weight:600;font-size:18px;transition:transform .15s}
+  .arrow{margin-left:auto;flex:0 0 auto;color:#6430AB;font-weight:600;font-size:18px;transition:transform .15s}
   .tile:hover .arrow{transform:translateX(4px)}
 
   /* other form */
@@ -374,8 +376,8 @@
 </main>
 
 <footer>
-  <a href="https://www.copilotkit.ai">copilotkit.ai</a> · <a href="https://docs.copilotkit.ai">Docs</a> · <a href="https://discord.gg/copilotkit">Discord</a><br>
-  <span style="font-size:10.5px">Icons: Creative Studio, Vectors Point, hanis tusiyani, Gung Yoga, Arkinasi, M.N. Subhiansyah — via The Noun Project</span>
+  <a href="https://www.copilotkit.ai">copilotkit.ai</a> · <a href="https://docs.copilotkit.ai">Docs</a> · <a href="https://discord.gg/copilotkit">Discord</a>
+  <!-- Icon attribution (Noun Project): see icons/ATTRIBUTION.txt -->
 </footer>
 
 <script>

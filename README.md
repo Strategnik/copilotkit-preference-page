@@ -24,7 +24,7 @@ Live preview: **https://preference-page.vercel.app/?demo=1** (demo mode — full
 ## Files
 - `index.html` — the whole page
 - `logo-full.svg` / `logo-mark.svg` — official CopilotKit logo assets (header + favicon)
-- `icons/` — the six tile icons (Noun Project, licensed; attribution in `icons/ATTRIBUTION.txt` and the page footer)
+- `icons/` — the six tile icons (Noun Project, licensed; attribution in `icons/ATTRIBUTION.txt`; not shown on-page)
 - `_previews/` — current screenshots
 
 ## Go-live checklist (CopilotKit team, ~10 min)
