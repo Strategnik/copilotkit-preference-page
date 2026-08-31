@@ -10,6 +10,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- HubSpot tracking (portal 45532593, NA2) — sets the hubspotutk cookie so form
+     submissions carry a hutk and aren't silently spam-filtered -->
+<script async defer src="https://js-na2.hs-scripts.com/45532593.js"></script>
 <style>
   /* CopilotKit design tokens — from internal-skills/copilotkit-ui-theme (verbatim) */
   :root{
@@ -367,7 +370,7 @@
    Email links: https://<host>/?email={{contact.email}}
    ============================================================ */
 const PORTAL_ID = "45532593";
-const FORM_GUID = "REPLACE_WITH_FORM_GUID";   // <-- set me
+const FORM_GUID = "d0b0d64a-d29c-4eb0-b10b-bdf53e8446d6";   // Nurture · Use-Case Selection (portal 45532593)
 const DOJO = {
   t1_agent_native_canvas: "https://dojo.showcase.copilotkit.ai/?integration=langgraph-python&demo=shared-state-read-write",
   t2_generative_ui:       "https://dojo.showcase.copilotkit.ai/?integration=langgraph-python&demo=gen-ui-tool-based",
@@ -398,9 +401,12 @@ async function submit(track, otherText){
     {objectTypeId:"0-1", name:"nurture_use_case", value:track},
   ];
   if(otherText) fields.push({objectTypeId:"0-1", name:"nurture_use_case_other", value:otherText});
-  const r=await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${PORTAL_ID}/${FORM_GUID}`,
+  const context={pageUri:location.href, pageName:"What are you building? — CopilotKit"};
+  const hutk=document.cookie.match(/(?:^|; )hubspotutk=([^;]+)/)?.[1];
+  if(hutk) context.hutk=hutk;   // ties the submission to the tracked visitor; avoids silent spam filtering
+  const r=await fetch(`https://api-na2.hsforms.com/submissions/v3/integration/submit/${PORTAL_ID}/${FORM_GUID}`,
     {method:"POST",headers:{"Content-Type":"application/json"},
-     body:JSON.stringify({fields, context:{pageUri:location.href, pageName:"What are you building? — CopilotKit"}})});
+     body:JSON.stringify({fields, context})});
   if(!r.ok) throw new Error("submit "+r.status);
 }
 
